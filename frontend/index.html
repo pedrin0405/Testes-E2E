@@ -1,68 +1,29 @@
 <!DOCTYPE html>
-<!--
-  frontend/index.html
-  Responsabilidade: estrutura HTML da página de login.
-
-  Esta é a PRIMEIRA tela que o usuário vê ao acessar a aplicação.
-  Contém um formulário com e-mail e senha, que é controlado
-  pelo arquivo login.js.
-
-  Boas práticas aplicadas:
-  - Semântica HTML5 (<main>, <header>, <footer>, <form>)
-  - Acessibilidade (aria-required, aria-describedby, aria-live)
-  - SEO básico (title, meta description)
--->
 <html lang="pt-BR">
 <head>
-  <!-- Define a codificação de caracteres (suporte a acentos e símbolos) -->
   <meta charset="UTF-8" />
-
-  <!-- Garante que a página se adapte ao tamanho da tela do dispositivo -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Meta description: texto exibido nos resultados de busca do Google -->
   <meta name="description" content="Faça login para acessar sua conta com segurança." />
-
-  <!-- Título da aba do navegador -->
   <title>Login | AuthFlow</title>
-
-  <!-- Pré-conecta ao servidor do Google Fonts para carregamento mais rápido -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <!-- Importa a fonte Inter em múltiplos pesos para tipografia profissional -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Arquivo de estilos CSS da aplicação -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- ── Blobs de fundo animados ─────────────────────────────
-       Elementos decorativos com gradiente e blur que criam
-       o efeito de profundidade visual (glassmorphism).
-       aria-hidden="true" os esconde de leitores de tela,
-       pois são puramente decorativos.
-  -->
   <div class="bg-blob blob-1" aria-hidden="true"></div>
   <div class="bg-blob blob-2" aria-hidden="true"></div>
   <div class="bg-blob blob-3" aria-hidden="true"></div>
 
-  <!-- Área principal da página (elemento semântico <main>) -->
   <main class="auth-container" role="main">
-
-    <!-- Card branco centralizado que contém o formulário de login -->
     <div class="auth-card">
-
-      <!-- ── Cabeçalho / Marca ──────────────────────────────── -->
       <header class="auth-header">
-        <!-- Ícone SVG da marca (desenhado inline para controle total) -->
         <div class="brand-icon" aria-hidden="true">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="32" height="32" rx="10" fill="url(#grad)"/>
             <path d="M16 8C12.686 8 10 10.686 10 14C10 16.21 11.19 18.14 13 19.19V22H19V19.19C20.81 18.14 22 16.21 22 14C22 10.686 19.314 8 16 8Z" fill="white" fill-opacity="0.9"/>
             <rect x="12" y="22" width="8" height="2" rx="1" fill="white" fill-opacity="0.7"/>
             <defs>
-              <!-- Gradiente usado no fundo do ícone -->
               <linearGradient id="grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
                 <stop stop-color="#6366f1"/>
                 <stop offset="1" stop-color="#8b5cf6"/>
@@ -70,65 +31,32 @@
             </defs>
           </svg>
         </div>
-
-        <!-- Título principal da página (h1 único por página = boa prática SEO) -->
         <h1 class="brand-name">AuthFlow</h1>
         <p class="auth-subtitle">Bem-vindo de volta! Faça login na sua conta.</p>
       </header>
 
-      <!-- ── Alertas de feedback ────────────────────────────────
-           Ambos iniciam com o atributo "hidden" (invisíveis).
-           O login.js os torna visíveis conforme o resultado.
-           aria-live="polite" informa leitores de tela sobre
-           mudanças dinâmicas no conteúdo.
-      -->
-
-      <!-- Alerta de sucesso (verde) — exibido momentaneamente antes do redirect -->
       <div id="alert-success" class="alert alert-success" role="alert" aria-live="polite" hidden>
-        <!-- Ícone de check-circle em SVG -->
         <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
         </svg>
-        <!-- id separado para que o JS possa alterar apenas o texto -->
         <span id="alert-success-text">Login efetuado com sucesso!</span>
       </div>
 
-      <!-- Alerta de erro (vermelho) — exibido quando o login falha -->
       <div id="alert-error" class="alert alert-error" role="alert" aria-live="polite" hidden>
-        <!-- Ícone de X-circle em SVG -->
         <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
         </svg>
         <span id="alert-error-text">Credenciais inválidas</span>
       </div>
 
-      <!-- ── Formulário de Login ──────────────────────────────
-           novalidate desativa a validação nativa do HTML5,
-           deixando o JavaScript (login.js) assumir o controle
-           total sobre as mensagens de erro exibidas.
-      -->
       <form id="login-form" class="auth-form" novalidate>
-
-        <!-- ── Campo E-mail ──────────────────────────────────── -->
         <div class="form-group">
-          <!-- <label for="email"> vincula o label ao input pelo id -->
           <label for="email" class="form-label">E-mail</label>
-
-          <!-- Wrapper para posicionar o ícone dentro do input -->
           <div class="input-wrapper">
-            <!-- Ícone decorativo de envelope -->
             <svg class="input-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
               <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
             </svg>
-
-            <!-- Campo de e-mail
-                 type="email": ativa teclado de e-mail em mobile e
-                               validação básica do navegador (usamos novalidate)
-                 autocomplete="email": sugere e-mails salvos no navegador
-                 aria-required="true": informa leitores de tela que é obrigatório
-                 aria-describedby="email-error": vincula ao span de erro para acessibilidade
-            -->
             <input
               type="email"
               id="email"
@@ -140,25 +68,15 @@
               aria-describedby="email-error"
             />
           </div>
-
-          <!-- Mensagem de erro do campo e-mail (oculta por padrão)
-               role="alert" notifica leitores de tela quando o conteúdo muda -->
           <span id="email-error" class="field-error" role="alert" hidden>O e-mail é obrigatório.</span>
         </div>
 
-        <!-- ── Campo Senha ───────────────────────────────────── -->
         <div class="form-group">
           <label for="password" class="form-label">Senha</label>
           <div class="input-wrapper">
-            <!-- Ícone decorativo de cadeado -->
             <svg class="input-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
             </svg>
-
-            <!-- Campo de senha
-                 type="password": mascara os caracteres com bullets (●●●●)
-                 autocomplete="current-password": habilita gerenciadores de senha
-            -->
             <input
               type="password"
               id="password"
@@ -169,9 +87,6 @@
               aria-required="true"
               aria-describedby="password-error"
             />
-
-            <!-- Botão para alternar visibilidade da senha (ícone do olho)
-                 type="button": evita que este botão submeta o formulário acidentalmente -->
             <button type="button" id="toggle-password" class="toggle-password" aria-label="Mostrar senha">
               <svg id="eye-icon" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
@@ -179,16 +94,9 @@
               </svg>
             </button>
           </div>
-
-          <!-- Mensagem de erro do campo senha -->
           <span id="password-error" class="field-error" role="alert" hidden>A senha é obrigatória.</span>
         </div>
 
-        <!-- ── Botão de Submit ──────────────────────────────────
-             disabled: começa desabilitado; o login.js o habilita
-             quando ambos os campos estiverem preenchidos.
-             type="submit": submete o formulário ao ser clicado.
-        -->
         <button
           type="submit"
           id="login-btn"
@@ -196,26 +104,17 @@
           disabled
           aria-label="Entrar na conta"
         >
-          <!-- Texto normal do botão -->
           <span id="btn-text">Entrar</span>
-          <!-- Spinner de carregamento (oculto por padrão) — aparece durante a requisição -->
           <span id="btn-spinner" class="spinner" hidden aria-hidden="true"></span>
         </button>
       </form>
 
-      <!-- ── Rodapé informativo ─────────────────────────────────
-           Exibe as credenciais de teste para facilitar a avaliação
-           do projeto. Em produção, este bloco seria removido.
-      -->
       <footer class="auth-footer">
         <p>Credencial de teste: <strong>usuario@teste.com</strong> / <strong>senha123</strong></p>
       </footer>
-    </div><!-- /auth-card -->
+    </div>
   </main>
 
-  <!-- Carrega o script de lógica da página de login.
-       Colocado no final do <body> para garantir que todos os
-       elementos HTML já existam no DOM quando o JS executar. -->
   <script src="login.js"></script>
 </body>
 </html>

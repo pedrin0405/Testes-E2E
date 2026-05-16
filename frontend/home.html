@@ -1,46 +1,21 @@
 <!DOCTYPE html>
-<!--
-  frontend/home.html
-  Responsabilidade: estrutura HTML da página Home.
-
-  Esta página é exibida SOMENTE após o login bem-sucedido.
-  Ela apresenta:
-  - Uma barra de navegação superior com o nome do usuário
-  - Um banner de confirmação de sucesso ("Login efetuado com sucesso!")
-  - Uma saudação personalizada com o nome do usuário
-  - Cards com informações da sessão atual
-
-  A personalização é feita pelo home.js, que lê os dados
-  salvos na sessionStorage durante o login.
--->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Página inicial do AuthFlow — você está autenticado com sucesso." />
   <title>Home | AuthFlow</title>
-
-  <!-- Mesma fonte utilizada na página de login (consistência visual) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<!-- A classe "home-body" ativa estilos específicos desta página no CSS -->
 <body class="home-body">
-
-  <!-- Blobs decorativos de fundo (mesmos da tela de login) -->
   <div class="bg-blob blob-1" aria-hidden="true"></div>
   <div class="bg-blob blob-2" aria-hidden="true"></div>
   <div class="bg-blob blob-3" aria-hidden="true"></div>
 
-  <!-- ── Barra de Navegação Superior ─────────────────────────
-       Fica fixada no topo da página (position: sticky no CSS).
-       Contém a marca à esquerda e informações do usuário à direita.
-  -->
   <nav class="top-nav" role="navigation" aria-label="Navegação principal">
-
-    <!-- Marca/logo à esquerda -->
     <div class="nav-brand">
       <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <rect width="32" height="32" rx="10" fill="url(#grad-nav)"/>
@@ -55,63 +30,33 @@
       </svg>
       <span>AuthFlow</span>
     </div>
-
-    <!-- Área do usuário à direita: avatar, nome e botão Sair -->
     <div class="nav-user">
-      <!-- Avatar circular com a inicial do nome do usuário.
-           O texto "U" é substituído pelo home.js com a inicial real. -->
       <div class="user-avatar" id="user-avatar" aria-hidden="true">U</div>
-
-      <!-- Nome do usuário. Atualizado pelo home.js via sessionStorage. -->
       <span id="user-name-nav">Usuário</span>
-
-      <!-- Botão de logout — aciona o home.js para limpar a sessão e redirecionar -->
       <button id="logout-btn" class="btn-logout" aria-label="Sair da conta">Sair</button>
     </div>
   </nav>
 
-  <!-- ── Conteúdo Principal ────────────────────────────────── -->
   <main class="home-main" role="main">
-
-    <!-- ── Banner de Sucesso ──────────────────────────────────
-         Exibido logo que a página carrega, confirmando que o
-         login foi realizado. O usuário pode fechá-lo clicando no X.
-         role="status" + aria-live="polite" para acessibilidade.
-    -->
     <div class="success-banner" id="success-banner" role="status" aria-live="polite">
-
-      <!-- Ícone de check-circle representando sucesso -->
       <div class="banner-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
-
-      <!-- Texto do banner: título e subtítulo -->
       <div class="banner-content">
-        <!-- h2 é o título da seção (h1 é o título da página mais abaixo) -->
         <h2 class="banner-title">Login efetuado com sucesso!</h2>
         <p class="banner-subtitle">Você está autenticado e pode explorar a plataforma.</p>
       </div>
-
-      <!-- Botão para fechar o banner (X) -->
       <button class="banner-close" id="close-banner" aria-label="Fechar mensagem de sucesso">
         <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
         </svg>
       </button>
-    </div><!-- /success-banner -->
+    </div>
 
-    <!-- ── Seção de Boas-vindas ──────────────────────────────
-         aria-labelledby vincula a seção ao seu título (h1) para
-         que leitores de tela anunciem corretamente o contexto.
-    -->
     <section class="welcome-section" aria-labelledby="welcome-heading">
-
-      <!-- Bloco de texto de boas-vindas -->
       <div class="welcome-text">
-        <!-- Título principal da página (h1). O span#user-name-display
-             é atualizado pelo home.js com o nome real do usuário. -->
         <h1 id="welcome-heading" class="welcome-title">
           Olá, <span id="user-name-display" class="highlight">Usuário</span>! 👋
         </h1>
@@ -120,17 +65,9 @@
         </p>
       </div>
 
-      <!-- ── Grid de Cards de Informação ───────────────────────
-           Exibe estatísticas/informações da sessão atual.
-           role="list" + role="listitem" adicionam semântica de lista
-           para leitores de tela sem usar <ul>/<li>.
-      -->
       <div class="stats-grid" role="list">
-
-        <!-- Card 1: Status da Sessão -->
         <article class="stat-card" role="listitem">
           <div class="stat-icon stat-icon--indigo" aria-hidden="true">
-            <!-- Ícone de usuário -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
@@ -141,10 +78,8 @@
           </div>
         </article>
 
-        <!-- Card 2: Nível de Acesso -->
         <article class="stat-card" role="listitem">
           <div class="stat-icon stat-icon--violet" aria-hidden="true">
-            <!-- Ícone de escudo (segurança) -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
             </svg>
@@ -155,27 +90,21 @@
           </div>
         </article>
 
-        <!-- Card 3: Hora do Login
-             O id="login-time" é atualizado pelo home.js com o horário real. -->
         <article class="stat-card" role="listitem">
           <div class="stat-icon stat-icon--emerald" aria-hidden="true">
-            <!-- Ícone de relógio -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
           <div class="stat-info">
-            <!-- Valor inicial "--:--" é substituído pelo horário real via JS -->
             <span class="stat-value" id="login-time">--:--</span>
             <span class="stat-label">Hora do Login</span>
           </div>
         </article>
-      </div><!-- /stats-grid -->
+      </div>
     </section>
   </main>
 
-  <!-- Script da Home. Carregado ao final do body para garantir
-       que todos os elementos HTML já existam no DOM. -->
   <script src="home.js"></script>
 </body>
 </html>
