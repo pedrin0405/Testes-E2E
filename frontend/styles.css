@@ -1,51 +1,65 @@
-/* ─────────────────────────────────────────────────────────────────────────────
-   AuthFlow · Global CSS Design System
-   ───────────────────────────────────────────────────────────────────────────── */
+/* ============================================================
+   frontend/styles.css
+   Sistema de design completo da aplicação AuthFlow.
+   Organização:
+     1. Variáveis CSS (tokens de design)
+     2. Reset e base
+     3. Blobs de fundo animados
+     4. Página de Login (auth-container, card, form, botão)
+     5. Página Home (navbar, banner, seção de boas-vindas, cards)
+     6. Responsividade (mobile)
+   ============================================================ */
 
-/* ── CSS Custom Properties ─────────────────────────────────────────────────── */
+/* ── 1. Variáveis CSS (Custom Properties) ──────────────────────
+   Definem os tokens de design centralizados.
+   Uso: var(--nome-da-variavel) em qualquer regra CSS.
+   Vantagem: mudar uma cor aqui atualiza toda a aplicação.
+   ─────────────────────────────────────────────────────────── */
 :root {
-  /* Color palette */
-  --clr-bg:          #0f0f1a;
-  --clr-surface:     #16162b;
-  --clr-surface-2:   #1e1e38;
-  --clr-border:      rgba(255, 255, 255, 0.08);
-  --clr-border-focus:rgba(99, 102, 241, 0.6);
+  /* Superfícies / fundos */
+  --clr-bg:          #0f0f1a;          /* fundo principal (quase preto azulado) */
+  --clr-surface:     #16162b;          /* fundo dos cards */
+  --clr-surface-2:   #1e1e38;          /* fundo dos inputs */
+  --clr-border:      rgba(255,255,255,0.08);   /* borda sutil */
+  --clr-border-focus:rgba(99,102,241,0.6);     /* borda ao focar um input */
 
-  /* Brand */
-  --clr-primary:     #6366f1;
-  --clr-primary-h:   #7577f3;
-  --clr-primary-d:   #4f52d9;
-  --clr-secondary:   #8b5cf6;
+  /* Cores da marca (roxo-índigo) */
+  --clr-primary:   #6366f1;  /* cor principal */
+  --clr-primary-h: #7577f3;  /* hover da cor principal */
+  --clr-primary-d: #4f52d9;  /* variante mais escura */
+  --clr-secondary: #8b5cf6;  /* cor secundária (violeta) */
 
-  /* Semantic */
-  --clr-success:     #10b981;
-  --clr-success-bg:  rgba(16, 185, 129, 0.12);
-  --clr-error:       #f43f5e;
-  --clr-error-bg:    rgba(244, 63, 94, 0.12);
-  --clr-warning:     #f59e0b;
+  /* Cores semânticas */
+  --clr-success:    #10b981;                   /* verde de sucesso */
+  --clr-success-bg: rgba(16,185,129,0.12);     /* fundo semi-transparente verde */
+  --clr-error:      #f43f5e;                   /* vermelho de erro */
+  --clr-error-bg:   rgba(244,63,94,0.12);      /* fundo semi-transparente vermelho */
 
-  /* Text */
-  --clr-text-primary:   #f1f5f9;
-  --clr-text-secondary: #94a3b8;
-  --clr-text-muted:     #64748b;
+  /* Texto */
+  --clr-text-primary:   #f1f5f9;  /* texto principal (quase branco) */
+  --clr-text-secondary: #94a3b8;  /* texto secundário (cinza claro) */
+  --clr-text-muted:     #64748b;  /* texto apagado (cinza escuro) */
 
-  /* Shadows */
-  --shadow-card:   0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.4);
-  --shadow-btn:    0 4px 15px rgba(99, 102, 241, 0.35);
-  --shadow-input:  0 0 0 3px rgba(99, 102, 241, 0.25);
+  /* Sombras */
+  --shadow-card: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.4);
+  --shadow-btn:  0 4px 15px rgba(99,102,241,0.35);
+  --shadow-input:0 0 0 3px rgba(99,102,241,0.25);
 
-  /* Typography */
+  /* Tipografia */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* Transitions */
+  /* Durações de transição padronizadas */
   --tr-fast:   150ms ease;
   --tr-normal: 250ms ease;
   --tr-slow:   400ms ease;
 }
 
-/* ── Reset ──────────────────────────────────────────────────────────────────── */
+/* ── 2. Reset e Base ───────────────────────────────────────────
+   Remove margens/paddings padrão do navegador e padroniza
+   o modelo de caixa (box-sizing: border-box).
+   ─────────────────────────────────────────────────────────── */
 *, *::before, *::after {
-  box-sizing: border-box;
+  box-sizing: border-box; /* padding e border incluídos na largura/altura */
   margin: 0;
   padding: 0;
 }
@@ -58,49 +72,57 @@ body {
   color: var(--clr-text-primary);
   min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased; /* suaviza fontes no macOS/iOS */
 }
 
-/* ── Animated Background Blobs ──────────────────────────────────────────────── */
+/* ── 3. Blobs de Fundo Animados ────────────────────────────────
+   Círculos grandes com gradiente radial e blur extremo que
+   criam o efeito de "neon difuso" no fundo da página.
+   position:fixed os mantém no lugar durante o scroll.
+   pointer-events:none garante que não interceptem cliques.
+   ─────────────────────────────────────────────────────────── */
 .bg-blob {
   position: fixed;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(80px);    /* blur forte = efeito glow difuso */
   pointer-events: none;
   z-index: 0;
-  animation: float 8s ease-in-out infinite;
+  animation: float 8s ease-in-out infinite; /* animação de flutuação contínua */
 }
 
-.blob-1 {
+.blob-1 { /* blob roxo-índigo no canto superior esquerdo */
   width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
   top: -150px; left: -100px;
   animation-delay: 0s;
 }
 
-.blob-2 {
+.blob-2 { /* blob violeta no canto inferior direito */
   width: 400px; height: 400px;
   background: radial-gradient(circle, rgba(139,92,246,0.14) 0%, transparent 70%);
   bottom: -100px; right: -80px;
-  animation-delay: -3s;
+  animation-delay: -3s; /* começa em momento diferente para dessincronia */
 }
 
-.blob-3 {
+.blob-3 { /* blob verde no centro-direita */
   width: 300px; height: 300px;
   background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%);
   top: 40%; left: 55%;
   animation-delay: -6s;
 }
 
+/* Keyframe da animação de flutuação suave */
 @keyframes float {
   0%, 100% { transform: translateY(0) scale(1); }
-  50%       { transform: translateY(-30px) scale(1.05); }
+  50%       { transform: translateY(-30px) scale(1.05); } /* sobe e cresce levemente */
 }
 
-/* ── Auth Layout ────────────────────────────────────────────────────────────── */
+/* ── 4. PÁGINA DE LOGIN ─────────────────────────────────────── */
+
+/* Container principal: centraliza o card verticalmente */
 .auth-container {
   position: relative;
-  z-index: 1;
+  z-index: 1; /* fica acima dos blobs (z-index: 0) */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,6 +130,7 @@ body {
   padding: 24px;
 }
 
+/* Card de login: glassmorphism com borda sutil e sombra profunda */
 .auth-card {
   background: var(--clr-surface);
   border: 1px solid var(--clr-border);
@@ -116,20 +139,19 @@ body {
   width: 100%;
   max-width: 440px;
   box-shadow: var(--shadow-card);
-  animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: slide-up 0.5s cubic-bezier(0.16,1,0.3,1) both; /* entra de baixo para cima */
 }
 
+/* Animação de entrada do card */
 @keyframes slide-up {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Auth Header ────────────────────────────────────────────────────────────── */
-.auth-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
+/* Cabeçalho centralizado com logo, nome e subtítulo */
+.auth-header { text-align: center; margin-bottom: 32px; }
 
+/* Ícone da marca com efeito de brilho pulsante */
 .brand-icon {
   display: inline-flex;
   margin-bottom: 16px;
@@ -137,29 +159,29 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5)); }
-  50%       { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.8)); }
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(99,102,241,0.5)); }
+  50%       { filter: drop-shadow(0 0 20px rgba(99,102,241,0.8)); }
 }
 
+/* Nome da marca com gradiente de texto (truque CSS moderno) */
 .brand-name {
   font-size: 1.75rem;
   font-weight: 700;
   background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;   /* corta o gradiente no formato do texto */
+  -webkit-text-fill-color: transparent; /* torna o preenchimento original transparente */
   background-clip: text;
   display: block;
   margin-bottom: 8px;
   letter-spacing: -0.5px;
 }
 
-.auth-subtitle {
-  font-size: 0.9rem;
-  color: var(--clr-text-secondary);
-  line-height: 1.5;
-}
+.auth-subtitle { font-size: 0.9rem; color: var(--clr-text-secondary); line-height: 1.5; }
 
-/* ── Alert Messages ─────────────────────────────────────────────────────────── */
+/* ── Alertas de Feedback ───────────────────────────────────────
+   Banners coloridos exibidos após tentativa de login.
+   Ambos ficam ocultos (hidden) e são ativados pelo login.js.
+   ─────────────────────────────────────────────────────────── */
 .alert {
   display: flex;
   align-items: center;
@@ -172,71 +194,55 @@ body {
   animation: alert-in 0.3s ease both;
 }
 
+/* Animação de entrada dos alertas (desliza de cima) */
 @keyframes alert-in {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.alert-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
+.alert-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
-.alert-success {
+.alert-success { /* verde — login bem-sucedido */
   background: var(--clr-success-bg);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(16,185,129,0.3);
   color: #34d399;
 }
 
-.alert-error {
+.alert-error { /* vermelho — credenciais inválidas */
   background: var(--clr-error-bg);
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  border: 1px solid rgba(244,63,94,0.3);
   color: #fb7185;
 }
 
-/* ── Form ───────────────────────────────────────────────────────────────────── */
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+/* ── Formulário ────────────────────────────────────────────────
+   Layout em coluna com espaçamento uniforme entre campos.
+   ─────────────────────────────────────────────────────────── */
+.auth-form { display: flex; flex-direction: column; gap: 20px; }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.form-group { display: flex; flex-direction: column; gap: 8px; }
 
-.form-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--clr-text-secondary);
-  letter-spacing: 0.01em;
-}
+.form-label { font-size: 0.875rem; font-weight: 500; color: var(--clr-text-secondary); }
 
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+/* Wrapper relativo para posicionar o ícone sobre o input */
+.input-wrapper { position: relative; display: flex; align-items: center; }
 
+/* Ícone posicionado absolutamente dentro do input */
 .input-icon {
   position: absolute;
   left: 16px;
-  width: 18px;
-  height: 18px;
+  width: 18px; height: 18px;
   color: var(--clr-text-muted);
-  pointer-events: none;
+  pointer-events: none; /* não bloqueia cliques no input */
   transition: color var(--tr-fast);
 }
 
+/* Campo de texto do formulário */
 .form-input {
   width: 100%;
   background: var(--clr-surface-2);
   border: 1px solid var(--clr-border);
   border-radius: 12px;
-  padding: 13px 16px 13px 46px;
+  padding: 13px 16px 13px 46px; /* espaço à esquerda para o ícone */
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   color: var(--clr-text-primary);
@@ -246,20 +252,20 @@ body {
 
 .form-input::placeholder { color: var(--clr-text-muted); }
 
+/* Estado de foco: destaca o campo com borda colorida e glow */
 .form-input:focus {
   border-color: var(--clr-primary);
   box-shadow: var(--shadow-input);
   background: var(--clr-surface);
 }
 
-.form-input:focus + .input-icon,
-.input-wrapper:focus-within .input-icon {
-  color: var(--clr-primary);
-}
+/* O ícone muda de cor quando o campo está em foco */
+.input-wrapper:focus-within .input-icon { color: var(--clr-primary); }
 
-/* Password field has extra padding for toggle button */
+/* Espaço extra no campo de senha para o botão de toggle */
 #password { padding-right: 48px; }
 
+/* Botão de toggle de visibilidade da senha (ícone do olho) */
 .toggle-password {
   position: absolute;
   right: 14px;
@@ -273,26 +279,26 @@ body {
   border-radius: 6px;
   transition: color var(--tr-fast), background var(--tr-fast);
 }
-
 .toggle-password:hover { color: var(--clr-text-primary); background: rgba(255,255,255,0.06); }
 .toggle-password svg { width: 18px; height: 18px; }
 
-/* Field validation errors */
+/* Mensagem de erro por campo (obrigatoriedade) */
 .field-error {
   font-size: 0.8125rem;
   color: var(--clr-error);
-  display: flex;
-  align-items: center;
-  gap: 4px;
   animation: alert-in 0.2s ease both;
 }
 
+/* Estado de campo inválido: borda e glow vermelhos */
 .form-input.is-invalid {
   border-color: var(--clr-error);
-  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2);
+  box-shadow: 0 0 0 3px rgba(244,63,94,0.2);
 }
 
-/* ── Primary Button ─────────────────────────────────────────────────────────── */
+/* ── Botão "Entrar" ────────────────────────────────────────────
+   Gradiente de fundo, sombra colorida e micro-animações
+   no hover e no estado desabilitado.
+   ─────────────────────────────────────────────────────────── */
 .btn-primary {
   display: flex;
   align-items: center;
@@ -312,9 +318,10 @@ body {
   transition: opacity var(--tr-fast), transform var(--tr-fast), box-shadow var(--tr-fast);
   box-shadow: var(--shadow-btn);
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* garante que o ::after não vaze para fora */
 }
 
+/* Camada de brilho que aparece no hover (pseudo-elemento) */
 .btn-primary::after {
   content: '';
   position: absolute;
@@ -324,15 +331,17 @@ body {
   transition: opacity var(--tr-fast);
 }
 
+/* Hover: eleva o botão e intensifica a sombra */
 .btn-primary:not(:disabled):hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 8px 25px rgba(99,102,241,0.5);
 }
-
 .btn-primary:not(:disabled):hover::after { opacity: 1; }
 
+/* Active: volta ao lugar ao clicar */
 .btn-primary:not(:disabled):active { transform: translateY(0); }
 
+/* Desabilitado: reduz opacidade e remove efeitos interativos */
 .btn-primary:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -340,21 +349,21 @@ body {
   transform: none;
 }
 
-/* ── Spinner ────────────────────────────────────────────────────────────────── */
+/* ── Spinner de Carregamento ───────────────────────────────────
+   Círculo giratório exibido dentro do botão enquanto aguarda
+   a resposta da API. Usa a animação CSS "spin".
+   ─────────────────────────────────────────────────────────── */
 .spinner {
-  width: 18px;
-  height: 18px;
+  width: 18px; height: 18px;
   border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: #fff;
+  border-top-color: #fff; /* apenas a borda superior é branca = efeito de giro */
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Auth Footer ────────────────────────────────────────────────────────────── */
+/* Rodapé do card com as credenciais de teste */
 .auth-footer {
   margin-top: 24px;
   padding-top: 20px;
@@ -364,19 +373,19 @@ body {
   color: var(--clr-text-muted);
   line-height: 1.6;
 }
+.auth-footer strong { color: var(--clr-text-secondary); font-weight: 500; }
 
-.auth-footer strong {
-  color: var(--clr-text-secondary);
-  font-weight: 500;
-}
+/* ══════════════════════════════════════════════════════════════
+   5. PÁGINA HOME
+   ══════════════════════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   HOME PAGE STYLES
-   ═══════════════════════════════════════════════════════════════════════════ */
-
+/* Ativa layout de coluna para que a navbar fique no topo */
 .home-body { display: flex; flex-direction: column; }
 
-/* ── Top Navigation ──────────────────────────────────────────────────────── */
+/* ── Barra de Navegação Superior ──────────────────────────────
+   sticky + backdrop-filter criam o efeito de "vidro fosco":
+   a navbar fica no topo e o conteúdo passa por baixo dela.
+   ─────────────────────────────────────────────────────────── */
 .top-nav {
   position: sticky;
   top: 0;
@@ -386,138 +395,105 @@ body {
   justify-content: space-between;
   padding: 0 32px;
   height: 64px;
-  background: rgba(22, 22, 43, 0.85);
-  backdrop-filter: blur(20px);
+  background: rgba(22,22,43,0.85); /* semi-transparente para revelar o fundo */
+  backdrop-filter: blur(20px);      /* borrão do conteúdo atrás da navbar */
   border-bottom: 1px solid var(--clr-border);
 }
 
+/* Nome da marca na navbar com gradiente de texto */
 .nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.1rem; font-weight: 700;
   background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.nav-user {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.nav-user { display: flex; align-items: center; gap: 12px; }
 
+/* Círculo colorido com a inicial do nome do usuário */
 .user-avatar {
   width: 36px; height: 36px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.875rem; font-weight: 700; color: #fff;
 }
 
-#user-name-nav {
-  font-size: 0.875rem;
-  color: var(--clr-text-secondary);
-  font-weight: 500;
-}
+#user-name-nav { font-size: 0.875rem; color: var(--clr-text-secondary); font-weight: 500; }
 
+/* Botão de logout com cor vermelha discreta */
 .btn-logout {
-  background: rgba(244, 63, 94, 0.12);
-  border: 1px solid rgba(244, 63, 94, 0.25);
+  background: rgba(244,63,94,0.12);
+  border: 1px solid rgba(244,63,94,0.25);
   color: #fb7185;
   padding: 7px 16px;
   border-radius: 8px;
   font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.8125rem; font-weight: 500;
   cursor: pointer;
   transition: background var(--tr-fast), border-color var(--tr-fast);
 }
+.btn-logout:hover { background: rgba(244,63,94,0.22); border-color: rgba(244,63,94,0.45); }
 
-.btn-logout:hover {
-  background: rgba(244, 63, 94, 0.22);
-  border-color: rgba(244, 63, 94, 0.45);
-}
-
-/* ── Success Banner ──────────────────────────────────────────────────────── */
+/* ── Conteúdo principal da Home ────────────────────────────────
+   max-width limita a largura para melhor legibilidade em telas grandes.
+   margin: 0 auto centraliza horizontalmente.
+   ─────────────────────────────────────────────────────────── */
 .home-main {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
-  width: 100%;
+  position: relative; z-index: 1;
+  max-width: 900px; width: 100%;
   margin: 0 auto;
   padding: 40px 24px 60px;
 }
 
+/* ── Banner de Sucesso ─────────────────────────────────────────
+   Fundo verde semi-transparente com ícone, texto e botão fechar.
+   ─────────────────────────────────────────────────────────── */
 .success-banner {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  display: flex; align-items: center; gap: 16px;
   background: var(--clr-success-bg);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(16,185,129,0.3);
   border-radius: 16px;
   padding: 20px 24px;
   margin-bottom: 40px;
-  animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: slide-up 0.5s cubic-bezier(0.16,1,0.3,1) both;
 }
 
 .banner-icon {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: rgba(16, 185, 129, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--clr-success);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(16,185,129,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--clr-success);
 }
-
 .banner-icon svg { width: 24px; height: 24px; }
+.banner-content { flex: 1; } /* ocupa todo o espaço disponível */
+.banner-title { font-size: 1rem; font-weight: 600; color: #34d399; margin-bottom: 2px; }
+.banner-subtitle { font-size: 0.875rem; color: rgba(52,211,153,0.7); }
 
-.banner-content { flex: 1; }
-
-.banner-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #34d399;
-  margin-bottom: 2px;
-}
-
-.banner-subtitle {
-  font-size: 0.875rem;
-  color: rgba(52, 211, 153, 0.7);
-}
-
+/* Botão X para fechar o banner */
 .banner-close {
-  background: none;
-  border: none;
-  color: rgba(52, 211, 153, 0.5);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  display: flex;
+  background: none; border: none;
+  color: rgba(52,211,153,0.5); cursor: pointer;
+  padding: 4px; border-radius: 6px; display: flex;
   transition: color var(--tr-fast), background var(--tr-fast);
 }
-
-.banner-close:hover { color: #34d399; background: rgba(16, 185, 129, 0.1); }
+.banner-close:hover { color: #34d399; background: rgba(16,185,129,0.1); }
 .banner-close svg { width: 20px; height: 20px; }
 
-/* ── Welcome Section ──────────────────────────────────────────────────────── */
-.welcome-section { animation: slide-up 0.6s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+/* ── Seção de Boas-vindas ──────────────────────────────────── */
+.welcome-section { animation: slide-up 0.6s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
 
+/* Título "Olá, Nome! 👋" — tamanho fluido com clamp() */
 .welcome-title {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-size: clamp(1.8rem, 4vw, 2.5rem); /* mínimo 1.8rem, máximo 2.5rem */
   font-weight: 700;
   margin-bottom: 12px;
   letter-spacing: -0.5px;
 }
 
+/* Span do nome com gradiente de texto */
 .highlight {
   background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
   -webkit-background-clip: text;
@@ -526,13 +502,14 @@ body {
 }
 
 .welcome-description {
-  font-size: 1rem;
-  color: var(--clr-text-secondary);
-  margin-bottom: 40px;
-  line-height: 1.6;
+  font-size: 1rem; color: var(--clr-text-secondary);
+  margin-bottom: 40px; line-height: 1.6;
 }
 
-/* ── Stats Grid ───────────────────────────────────────────────────────────── */
+/* ── Grid de Cards de Estatísticas ────────────────────────────
+   auto-fit + minmax: cria colunas automaticamente conforme o espaço.
+   Em telas largas = 3 colunas; em mobile = 1 coluna.
+   ─────────────────────────────────────────────────────────── */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -544,52 +521,40 @@ body {
   border: 1px solid var(--clr-border);
   border-radius: 16px;
   padding: 24px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
+  display: flex; align-items: center; gap: 18px;
   box-shadow: var(--shadow-card);
   transition: border-color var(--tr-normal), transform var(--tr-normal);
 }
 
+/* Hover: eleva o card e colore a borda */
 .stat-card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(99,102,241,0.3);
   transform: translateY(-2px);
 }
 
+/* Ícone quadrado com cantos arredondados */
 .stat-icon {
-  width: 52px; height: 52px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-
 .stat-icon svg { width: 24px; height: 24px; }
 
-.stat-icon--indigo { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
-.stat-icon--violet { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-.stat-icon--emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+/* Variações de cor por card */
+.stat-icon--indigo  { background: rgba(99,102,241,0.15);  color: #818cf8; }
+.stat-icon--violet  { background: rgba(139,92,246,0.15);  color: #a78bfa; }
+.stat-icon--emerald { background: rgba(16,185,129,0.15);  color: #34d399; }
 
-.stat-info { display: flex; flex-direction: column; gap: 4px; }
+.stat-info  { display: flex; flex-direction: column; gap: 4px; }
+.stat-value { font-size: 1.25rem; font-weight: 700; color: var(--clr-text-primary); }
+.stat-label { font-size: 0.8125rem; color: var(--clr-text-muted); }
 
-.stat-value {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--clr-text-primary);
-}
-
-.stat-label {
-  font-size: 0.8125rem;
-  color: var(--clr-text-muted);
-  font-weight: 400;
-}
-
-/* ── Responsive ───────────────────────────────────────────────────────────── */
+/* ── 6. Responsividade (telas menores que 600px) ───────────────
+   Ajusta padding e oculta elementos menos importantes em mobile.
+   ─────────────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .auth-card { padding: 32px 24px; }
-  .top-nav { padding: 0 16px; }
-  #user-name-nav { display: none; }
-  .home-main { padding: 24px 16px 40px; }
-  .success-banner { flex-wrap: wrap; }
+  .auth-card  { padding: 32px 24px; }              /* card mais compacto */
+  .top-nav    { padding: 0 16px; }
+  #user-name-nav { display: none; }                /* oculta nome na navbar (só avatar) */
+  .home-main  { padding: 24px 16px 40px; }
+  .success-banner { flex-wrap: wrap; }             /* quebra linha se necessário */
 }
