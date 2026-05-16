@@ -1,0 +1,6 @@
+node_modules/
+backend/auth.db
+cypress/videos/
+cypress/screenshots/
+.DS_Store
+.env

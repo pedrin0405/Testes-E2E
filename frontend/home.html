@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Página inicial do AuthFlow — você está autenticado com sucesso." />
+  <title>Home | AuthFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="home-body">
+  <!-- Animated background -->
+  <div class="bg-blob blob-1" aria-hidden="true"></div>
+  <div class="bg-blob blob-2" aria-hidden="true"></div>
+  <div class="bg-blob blob-3" aria-hidden="true"></div>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav" role="navigation" aria-label="Navegação principal">
+    <div class="nav-brand">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="32" height="32" rx="10" fill="url(#grad-nav)"/>
+        <path d="M16 8C12.686 8 10 10.686 10 14C10 16.21 11.19 18.14 13 19.19V22H19V19.19C20.81 18.14 22 16.21 22 14C22 10.686 19.314 8 16 8Z" fill="white" fill-opacity="0.9"/>
+        <rect x="12" y="22" width="8" height="2" rx="1" fill="white" fill-opacity="0.7"/>
+        <defs>
+          <linearGradient id="grad-nav" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6366f1"/>
+            <stop offset="1" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>AuthFlow</span>
+    </div>
+    <div class="nav-user">
+      <div class="user-avatar" id="user-avatar" aria-hidden="true">U</div>
+      <span id="user-name-nav">Usuário</span>
+      <button id="logout-btn" class="btn-logout" aria-label="Sair da conta">Sair</button>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="home-main" role="main">
+    <!-- Success banner -->
+    <div class="success-banner" id="success-banner" role="status" aria-live="polite">
+      <div class="banner-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="banner-content">
+        <h2 class="banner-title">Login efetuado com sucesso!</h2>
+        <p class="banner-subtitle">Você está autenticado e pode explorar a plataforma.</p>
+      </div>
+      <button class="banner-close" id="close-banner" aria-label="Fechar mensagem de sucesso">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Welcome section -->
+    <section class="welcome-section" aria-labelledby="welcome-heading">
+      <div class="welcome-text">
+        <h1 id="welcome-heading" class="welcome-title">
+          Olá, <span id="user-name-display" class="highlight">Usuário</span>! 👋
+        </h1>
+        <p class="welcome-description">
+          Você acessou com sucesso o sistema AuthFlow. Sua sessão está ativa e segura.
+        </p>
+      </div>
+
+      <!-- Stats cards -->
+      <div class="stats-grid" role="list">
+        <article class="stat-card" role="listitem">
+          <div class="stat-icon stat-icon--indigo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">Ativo</span>
+            <span class="stat-label">Status da Sessão</span>
+          </div>
+        </article>
+
+        <article class="stat-card" role="listitem">
+          <div class="stat-icon stat-icon--violet" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">Seguro</span>
+            <span class="stat-label">Nível de Acesso</span>
+          </div>
+        </article>
+
+        <article class="stat-card" role="listitem">
+          <div class="stat-icon stat-icon--emerald" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="login-time">--:--</span>
+            <span class="stat-label">Hora do Login</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="home.js"></script>
+</body>
+</html>
